@@ -4,7 +4,7 @@ A hands-on cloud project demonstrating how to deploy a static Amazon Clone websi
 
 ## Architecture Diagram
 
-![AWS Architecture Diagram](screenshots/Architecture-diagram.png)
+![AWS Architecture Diagram](<Architecture diagram.drawio.png>)
 
 ## Technologies Used
 
