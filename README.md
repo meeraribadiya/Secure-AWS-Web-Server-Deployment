@@ -27,7 +27,7 @@ Launch an EC2 instance using Amazon Linux 2023 in the Mumbai region (`ap-south-1
 
 | Type | Port | Source |
 |---|---:|---|
-| SSH | 22 | Your IP address |
+| SSH | 22 | `65.2.10.78`|
 | HTTP | 80 | `0.0.0.0/0` |
 
 ### 3. Connect to EC2
@@ -36,7 +36,7 @@ Open Git Bash in the folder containing your `.pem` key and connect using SSH.
 
 ```bash
 chmod 400 my-web-server-key.pem
-ssh -i "my-web-server-key.pem" ec2-user@<EC2-PUBLIC-IP>
+ssh -i "my-web-server-key.pem" ec2-user@65.2.10.78
 ```
 
 Replace the key filename and public IP with your actual values.
@@ -61,7 +61,7 @@ Transfer your website files using SCP and place them in Nginx's web root directo
 
 Open the following URL in your browser:
 
-`http://<EC2-PUBLIC-IP>`
+`http://65.2.10.78`
 
 Your website should appear if the instance and Nginx are configured correctly.
 
