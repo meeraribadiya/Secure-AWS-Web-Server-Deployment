@@ -1,62 +1,80 @@
-# ☁️ Secure AWS Web Server Deployment with Linux, VPC & Nginx
+# Secure AWS Web Server Deployment with Linux, VPC & Nginx
 
-Production-ready hosting of a responsive web application (Amazon Clone) on **AWS EC2** using **Amazon Linux 2023**, custom **Security Groups**, **VPC networking**, and **Nginx** web server architecture.
+A hands-on cloud project demonstrating how to deploy a static Amazon Clone website on AWS EC2 using Amazon Linux 2023, Nginx, and AWS networking services.
 
----
+## Architecture Diagram
 
-## 📐 System Architecture
+![AWS Architecture Diagram](screenshots/Architecture-diagram.png)
 
-![AWS Architecture Diagram](screenshots/Architecture-diagram.drawio.png)
+## Technologies Used
 
-### 🏗️ Infrastructure & Network Specifications
+- **AWS EC2:** Hosts the web server.
+- **Amazon Linux 2023:** Operating system for the EC2 instance.
+- **Nginx:** Serves the website.
+- **VPC and Public Subnet:** Provide network connectivity.
+- **Internet Gateway and Route Table:** Enable internet traffic.
+- **Security Groups:** Control network access.
+- **Git Bash, SSH and SCP:** Connect to the server and transfer files.
+- **Git and GitHub:** Manage project files and version control.
 
-| Component | Resource Type | Description / Configuration |
-| :--- | :--- | :--- |
-| **Cloud Provider** | Amazon Web Services (AWS) | Deployed in region `ap-south-1` (Mumbai) |
-| **Compute Engine** | AWS EC2 (`t3.micro`) | Running Amazon Linux 2023 OS |
-| **Virtual Private Cloud** | AWS VPC & Public Subnet | Default VPC with Internet Gateway routing |
-| **Security Firewall** | AWS Security Group | Inbound rules for SSH (Port 22) & HTTP (Port 80) |
-| **Web Server** | Nginx Engine | Serves static application build files |
-| **Storage Layer** | AWS EBS (Elastic Block Store) | 8 GB SSD General Purpose storage volume |
-| **CLI Management** | Git Bash, SSH, SCP | Remote administration and deployment pipeline |
+## Deployment Steps
 
----
+### 1. Launch EC2 Instance
 
-## 📸 Deployment Proof & Screenshots
+Launch an EC2 instance using Amazon Linux 2023 in the Mumbai region (`ap-south-1`). Configure a key pair and security group.
 
-### 1. Live Application & Terminal CLI Operations
-| Live Deployment View | Terminal Execution (SSH / SCP) |
-| :---: | :---: |
-| ![Live Web App](screenshots/aws-ec2-amazon-clone-deployment.png) | ![Git Bash Terminal](screenshots/Amazonclonegitbash.png) |
+### 2. Configure Security Group
 
----
+| Type | Port | Source |
+|---|---:|---|
+| SSH | 22 | Your IP address |
+| HTTP | 80 | `0.0.0.0/0` |
 
-### 2. AWS Management Console Verification
-| EC2 Launch Setup | VPC Network Dashboard | Subnet & Route Table | Nginx Welcome Verification |
-| :---: | :---: | :---: | :---: |
-| ![EC2 Config](screenshots/ec2-launch-config.png) | ![VPC Dashboard](screenshots/vpc-dashboard.png) | ![Subnet Route Table](screenshots/subnet-route-table.png) | ![Nginx Welcome](screenshots/nginx-welcome-page.png) |
+### 3. Connect to EC2
 
----
-
-## 🚀 Step-by-Step Execution Workflow
-
-### Step 1: Compute & Network Provisioning
-1. Launched an AWS EC2 `t3.micro` instance running **Amazon Linux 2023** in `ap-south-1`.
-2. Configured an AWS Security Group with the following inbound traffic rules:
-   * **Port 22 (SSH):** Remote terminal administration via RSA key pair (`.pem`).
-   * **Port 80 (HTTP):** Inbound web access for public HTTP traffic.
-
-### Step 2: Nginx Web Server Installation
-Connected to the instance via SSH and configured Nginx service:
+Open Git Bash in the folder containing your `.pem` key and connect using SSH.
 
 ```bash
-# Connect to EC2 instance
-ssh -i "my-web-server-key.pem" ec2-user@<ec2-public-ip>
+chmod 400 my-web-server-key.pem
+ssh -i "my-web-server-key.pem" ec2-user@<EC2-PUBLIC-IP>
+```
 
-# Update package repositories & install Nginx
+Replace the key filename and public IP with your actual values.
+
+### 4. Install Nginx
+
+Run these commands inside the EC2 terminal:
+
+```bash
 sudo dnf update -y
 sudo dnf install -y nginx
+sudo systemctl enable --now nginx
+```
 
-# Start and enable Nginx daemon
-sudo systemctl start nginx
-sudo systemctl enable nginx
+### 5. Deploy the Website
+
+Transfer your website files using SCP and place them in Nginx's web root directory:
+
+`/usr/share/nginx/html/`
+
+### 6. Verify Deployment
+
+Open the following URL in your browser:
+
+`http://<EC2-PUBLIC-IP>`
+
+Your website should appear if the instance and Nginx are configured correctly.
+
+## Security Notes
+
+- Restrict SSH access to your own IP address.
+- Never upload your private `.pem` key or AWS credentials to GitHub.
+- Check AWS Free Tier eligibility and potential charges before launching resources.
+
+## Key Learnings
+
+- EC2 instance setup and Linux server administration.
+- Nginx installation and web hosting.
+- AWS VPC, subnet, route table, and Internet Gateway fundamentals.
+- SSH authentication and SCP file transfer.
+- Security Group configuration and basic cloud security.
