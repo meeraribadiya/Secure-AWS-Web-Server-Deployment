@@ -1,68 +1,62 @@
-# ☁️ Secure AWS Web Server Deployment (Amazon Clone)
+# ☁️ Secure AWS Web Server Deployment with Linux, VPC & Nginx
 
-> **Amazon Linux 2023 EC2 instance aur Nginx web server ka use karke Amazon Clone web app ko AWS par live host karne ka complete project documentation.**
+Production-ready hosting of a responsive web application (Amazon Clone) on **AWS EC2** using **Amazon Linux 2023**, custom **Security Groups**, **VPC networking**, and **Nginx** web server architecture.
 
 ---
 
 ## 📐 System Architecture
 
-Yeh architecture diagram batata hai ki client request kaise **Internet Gateway**, **VPC Route Tables**, aur **Security Group** se hote hue EC2 instance tak pahunchti hai:
-
 ![AWS Architecture Diagram](screenshots/Architecture-diagram.drawio.png)
 
----
+### 🏗️ Infrastructure & Network Specifications
 
-## 🛠️ Infrastructure & Tech Stack
-
-| Layer | Technology / Resource Used | Description |
+| Component | Resource Type | Description / Configuration |
 | :--- | :--- | :--- |
-| **Cloud Provider** | Amazon Web Services (AWS) | Region: `ap-south-1` (Mumbai) |
-| **Compute Engine** | AWS EC2 (`t3.micro`) | Amazon Linux 2023 OS |
-| **Networking** | AWS VPC & Public Subnet | Default VPC infrastructure with Internet Gateway |
-| **Security** | AWS Security Group | Inbound rules: Port 22 (SSH) & Port 80 (HTTP) |
-| **Web Server** | Nginx | Reverse proxy & static file server |
-| **Storage** | AWS EBS | 8 GB SSD block volume |
-| **CLI Tools** | Git Bash, SSH, SCP | Remote administration & file synchronization |
+| **Cloud Provider** | Amazon Web Services (AWS) | Deployed in region `ap-south-1` (Mumbai) |
+| **Compute Engine** | AWS EC2 (`t3.micro`) | Running Amazon Linux 2023 OS |
+| **Virtual Private Cloud** | AWS VPC & Public Subnet | Default VPC with Internet Gateway routing |
+| **Security Firewall** | AWS Security Group | Inbound rules for SSH (Port 22) & HTTP (Port 80) |
+| **Web Server** | Nginx Engine | Serves static application build files |
+| **Storage Layer** | AWS EBS (Elastic Block Store) | 8 GB SSD General Purpose storage volume |
+| **CLI Management** | Git Bash, SSH, SCP | Remote administration and deployment pipeline |
 
 ---
 
-## 📸 Deployment Proof & Verification
+## 📸 Deployment Proof & Screenshots
 
-### 1. Live Amazon Clone Application
-Public IP address (`65.2.10.78`) par live load ho raha website:
-
-![Live Deployment](screenshots/aws-ec2-amazon-clone-deployment.png)
-
----
-
-### 2. Terminal Administration & File Transfer
-Git Bash ke dwara SSH key se server login aur SCP se production files upload karna:
-
-![Terminal Command Log](screenshots/Amazonclonegitbash.png)
+### 1. Live Application & Terminal CLI Operations
+| Live Deployment View | Terminal Execution (SSH / SCP) |
+| :---: | :---: |
+| ![Live Web App](screenshots/aws-ec2-amazon-clone-deployment.png) | ![Git Bash Terminal](screenshots/Amazonclonegitbash.png) |
 
 ---
 
-## 🚀 Step-by-Step Deployment Guide
-
-### Step 1: AWS Instance & Security Group Setup
-1. AWS Console me `ap-south-1` region me **Amazon Linux 2023** EC2 instance launch kiya (`t3.micro`).
-2. Security Group me 2 Inbound Rules add kiye:
-   * **Port 22 (SSH):** Remote terminal access ke liye.
-   * **Port 80 (HTTP):** Web browser access ke liye.
+### 2. AWS Management Console Verification
+| EC2 Launch Setup | VPC Network Dashboard | Subnet & Route Table | Nginx Welcome Verification |
+| :---: | :---: | :---: | :---: |
+| ![EC2 Config](screenshots/ec2-launch-config.png) | ![VPC Dashboard](screenshots/vpc-dashboard.png) | ![Subnet Route Table](screenshots/subnet-route-table.png) | ![Nginx Welcome](screenshots/nginx-welcome-page.png) |
 
 ---
 
-### Step 2: Nginx Web Server Install Karna
-EC2 instance me SSH se login karke Nginx install aur start kiya:
+## 🚀 Step-by-Step Execution Workflow
+
+### Step 1: Compute & Network Provisioning
+1. Launched an AWS EC2 `t3.micro` instance running **Amazon Linux 2023** in `ap-south-1`.
+2. Configured an AWS Security Group with the following inbound traffic rules:
+   * **Port 22 (SSH):** Remote terminal administration via RSA key pair (`.pem`).
+   * **Port 80 (HTTP):** Inbound web access for public HTTP traffic.
+
+### Step 2: Nginx Web Server Installation
+Connected to the instance via SSH and configured Nginx service:
 
 ```bash
-# SSH connection command
+# Connect to EC2 instance
 ssh -i "my-web-server-key.pem" ec2-user@<ec2-public-ip>
 
-# Nginx installation
+# Update package repositories & install Nginx
 sudo dnf update -y
 sudo dnf install -y nginx
 
-# Nginx start aur enable karna
+# Start and enable Nginx daemon
 sudo systemctl start nginx
 sudo systemctl enable nginx
